@@ -1,0 +1,17 @@
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f4f7f4}
+.container{max-width:420px;margin:auto;padding:16px}
+.title{text-align:center;color:#2e7d32}
+.subtitle{text-align:center;font-size:13px;color:#555;margin-bottom:16px}
+.info-box{background:#e8f5e9;border-left:4px solid #2e7d32;padding:12px;border-radius:6px;margin-bottom:12px}
+.recent{background:#eef3ee;padding:10px;border-radius:6px;font-size:13px;margin-bottom:12px}
+.progress{height:6px;border-radius:10px;background:linear-gradient(to right,#000,#c62828,#2e7d32);margin-bottom:14px}
+.section-title{margin-bottom:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:#fff;border:2px solid #e0e0e0;border-radius:14px;padding:14px;text-align:center;cursor:pointer}
+.card h3{margin:0;color:#2e7d32}
+.card span{display:inline-block;margin-top:6px;font-size:13px;background:#f1f1f1;padding:4px 10px;border-radius:20px}
+.card.active{border:2px solid #2e7d32;background:#f4fff4}
+.cta{margin-top:20px;width:100%;padding:14px;background:#8bc34a;border:none;border-radius:30px;font-size:16px;font-weight:bold;color:#fff}
+.copy-btn{margin-top:10px;padding:10px 20px;border:none;border-radius:30px;background:#2e7d32;color:#fff;width:100%}
+.message-box{margin-top:20px;background:#f9fff9;padding:16px;border-radius:16px}

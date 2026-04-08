@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete Payment</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1 class="title">Complete Payment</h1>
+  <p class="subtitle">Fast • Secure • Verified</p>
+
+  <div class="info-box">
+    You selected: <strong id="selectedPlan"></strong><br>
+    Fee: <strong id="feeAmount"></strong>
+  </div>
+
+  <div class="message-box">
+    <h3>Enter Phone Number</h3>
+    <input id="phone" placeholder="2547XXXXXXXX">
+
+    <button class="copy-btn" onclick="pay()">Pay Now</button>
+  </div>
+</div>
+
+<script>
+const amount = localStorage.getItem("amount") || 49;
+const limit = localStorage.getItem("limit") || "";
+
+document.getElementById("selectedPlan").innerText = limit;
+document.getElementById("feeAmount").innerText = "KSh " + amount;
+
+function pay(){
+  const phone = document.getElementById("phone").value;
+
+  if(!phone.startsWith("254")){
+    alert("Use format: 2547XXXXXXXX");
+    return;
+  }
+
+  fetch("https://jobs-abroad-r8k0.onrender.com/pay", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      phone: phone,
+      amount: amount
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert("STK Push sent! Check your phone 📲");
+    window.location.href = "success.html";
+  })
+  .catch(err => {
+    alert("Payment failed ❌");
+  });
+}
+</script>
+
+</body>
+</html>
